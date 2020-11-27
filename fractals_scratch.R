@@ -1,3 +1,85 @@
+how_deep <- 2
+
+startx <- 0
+starty <- 0
+sidelength <- 1
+degrees <- 0
+line <- 1
+start_line <- 1
+data_points <- data.frame(point = c(1, 2, 1, 2),
+                          line = line,
+                          start_line = start_line,
+                          segment = c(1, 1, 2, 2),
+                          i = 0,
+                          depth = 0,
+                          side = 0,
+                          degrees = degrees,
+                          degrees_in = 0,
+                          x = c(startx, 
+                                startx + (cos(degrees * pi / 180) * (sidelength / 3)), 
+                                startx + (cos(degrees * pi / 180) * ((2 * sidelength) / 3)), 
+                                startx + (cos(degrees * pi / 180) * sidelength)),
+                          y = c(starty, 
+                                starty + (sin(degrees * pi / 180) * (sidelength / 3)), 
+                                starty + (sin(degrees * pi / 180) * ((2 * sidelength) / 3)), 
+                                starty + (sin(degrees * pi / 180) * sidelength)))
+
+for(i in 1:how_deep){
+        print(paste("outside: ", i))
+        sidelength <- sidelength / 3
+        degrees <- degrees + 60
+        for(depth in 1:2^(i-1)){
+                print(paste("insdide: ", depth))
+                for(side in 1:2){
+                        print(paste("deep insdide: ", side))
+                        
+                        startx <- data_points$x[data_points$line == start_line & 
+                                                        data_points$segment == ifelse(side %% 2 == 0, 2, 1) & 
+                                                        data_points$point == ifelse(side %% 2 == 0, 1, 2)]
+                        starty <- data_points$y[data_points$line == start_line & 
+                                                        data_points$segment == ifelse(side %% 2 == 0, 2, 1) & 
+                                                        data_points$point == ifelse(side %% 2 == 0, 1, 2)]
+                        line <- line + 1
+                        
+        
+                        
+                        degrees_in <- ifelse((depth %% 2) == 1, 
+                                             ifelse(side %% 2 == 0, 
+                                                    degrees + 60, degrees),
+                                             ifelse(side %% 2 == 0, 
+                                                    degrees + 240, 
+                                                    degrees + 300))
+                         
+                        degrees_in <- degrees + ((side - 1) * depth * 60 * i) 
+                        
+                        
+                        tmp <- data.frame(point = c(1, 2, 1, 2),
+                                          line = line,
+                                          start_line = start_line,
+                                          segment = c(1, 1, 2, 2),
+                                          i = i,
+                                          depth = depth,
+                                          side = side,
+                                          degrees = degrees,
+                                          degrees_in = degrees_in,
+                                          x = c(startx, 
+                                                startx + (cos(degrees_in * pi / 180) * (sidelength / 3)), 
+                                                startx + (cos(degrees_in * pi / 180) * ((2 * sidelength) / 3)), 
+                                                startx + (cos(degrees_in * pi / 180) * sidelength)),
+                                          y = c(starty, 
+                                                starty + (sin(degrees_in * pi / 180) * (sidelength / 3)), 
+                                                starty + (sin(degrees_in * pi / 180) * ((2 * sidelength) / 3)), 
+                                                starty + (sin(degrees_in * pi / 180) * sidelength)))
+                        data_points <- rbind(data_points, tmp)
+                }
+                start_line <- start_line + 1        
+        }
+}
+
+ggplot(data_points, aes(x, y)) + 
+        geom_point()
+
+
 ## ONE SINGLE SIDE
 startx <- 0
 starty <- 0
