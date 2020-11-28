@@ -1,4 +1,4 @@
-how_deep <- 2
+how_deep <- 3
 
 startx <- 0
 starty <- 0
@@ -6,10 +6,12 @@ sidelength <- 1
 degrees <- 0
 line <- 1
 start_line <- 1
+tri_at_level <- 0
 data_points <- data.frame(point = c(1, 2, 1, 2),
                           line = line,
                           start_line = start_line,
                           segment = c(1, 1, 2, 2),
+                          tri_at_level = tri_at_level,
                           i = 0,
                           depth = 0,
                           side = 0,
@@ -28,6 +30,7 @@ for(i in 1:how_deep){
         print(paste("outside: ", i))
         sidelength <- sidelength / 3
         degrees <- degrees + 60
+        tri_at_level <- 1
         for(depth in 1:2^(i-1)){
                 print(paste("insdide: ", depth))
                 for(side in 1:2){
@@ -50,13 +53,18 @@ for(i in 1:how_deep){
                                                     degrees + 240, 
                                                     degrees + 300))
                          
-                        degrees_in <- degrees + ((side - 1) * depth * 60 * i) 
+                        degrees_in <- ifelse((depth %% 2) == 1,
+                                             ifelse(side == 1, degrees, 
+                                                    degrees + 60),
+                                             ifelse(side == 1, degrees - 60,
+                                                    degrees - (depth * 60)))
                         
                         
                         tmp <- data.frame(point = c(1, 2, 1, 2),
                                           line = line,
                                           start_line = start_line,
                                           segment = c(1, 1, 2, 2),
+                                          tri_at_level = tri_at_level,
                                           i = i,
                                           depth = depth,
                                           side = side,
@@ -72,13 +80,15 @@ for(i in 1:how_deep){
                                                 starty + (sin(degrees_in * pi / 180) * sidelength)))
                         data_points <- rbind(data_points, tmp)
                 }
-                start_line <- start_line + 1        
+                start_line <- start_line + 1  
+                tri_at_level <- tri_at_level + 1
         }
 }
 
 ggplot(data_points, aes(x, y)) + 
         geom_point()
 
+data_points
 
 ## ONE SINGLE SIDE
 startx <- 0
