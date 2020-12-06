@@ -1,16 +1,16 @@
 ## FRACTALS V2
 
-## LEVEL 0: DRAW ONE LINE @ STARTING ANGLE
+## LEVEL 0: DRAW ONE LINE @ STARTING ANGLE | 0X
 
-## LEVEL 1: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2)
+## LEVEL 1: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) | 1X/2X (+1) | S/S+X (+1)
 
-## LEVEL 2A: DRAW TWO LINES @ STARTING ANGLE + 120 (line 1) & + 180 (line 2) 
-## LEVEL 2B: DRAW TWO LINES @ STARTING ANGLE + 0 (line 2) & + 60 (line 4)
+## LEVEL 2A: DRAW TWO LINES @ STARTING ANGLE + 120 (line 1) & + 180 (line 2) | 2X/3X (+1) | S/S+X (+1)
+## LEVEL 2B: DRAW TWO LINES @ STARTING ANGLE + 0 (line 2) & + 60 (line 4) | 1X/0X (-1) | S-X/S-2X (-1)
 
-## LEVEL 3A: DRAW TWO LINES @ STARTING ANGLE + 180 (line 1) & + 60 (line 2) 
-## LEVEL 3B: DRAW TWO LINES @ STARTING ANGLE + 60 (line 2) & + 120 (line 4)
-## LEVEL 3C: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) 
-## LEVEL 3D: DRAW TWO LINES @ STARTING ANGLE + 120 (line 2) & + 0 (line 4)
+## LEVEL 3A: DRAW TWO LINES @ STARTING ANGLE + 180 (line 1) & + 60 (line 2) | 3X/4X (+1) | S/S+X (+1)
+## LEVEL 3B: DRAW TWO LINES @ STARTING ANGLE + 60 (line 2) & + 120 (line 4) | 2X/4X (+2) | S-X/S+X (+2)
+## LEVEL 3C: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) | 4X/2X (-2) | S+X/S-X (-2)
+## LEVEL 3D: DRAW TWO LINES @ STARTING ANGLE + 120 (line 2) & + 0 (line 4) | 0X/-1X (-1) | S-3X/S-4X (-1)
 
 library(ggplot2)
 library(dplyr)
