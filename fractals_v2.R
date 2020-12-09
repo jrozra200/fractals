@@ -2,7 +2,7 @@
 
 ## LEVEL 0: DRAW ONE LINE @ STARTING ANGLE | 0X
 
-## LEVEL 1: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) | 1X/2X (+1) | S/S+X (+1)
+## LEVEL 1: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) | 1X/2X (+1) | 0 + S/180 - S
 
 ## LEVEL 2A: DRAW TWO LINES @ STARTING ANGLE + 120 (line 1) & + 180 (line 2) | 2X/3X (+1) | S/S+X (+1)
 ## LEVEL 2B: DRAW TWO LINES @ STARTING ANGLE + 0 (line 2) & + 60 (line 4) | 1X/0X (-1) | S-X/S-2X (-1)
@@ -11,6 +11,74 @@
 ## LEVEL 3B: DRAW TWO LINES @ STARTING ANGLE + 60 (line 2) & + 120 (line 4) | 2X/4X (+2) | S-X/S+X (+2)
 ## LEVEL 3C: DRAW TWO LINES @ STARTING ANGLE + 60 (line 1) & + 120 (line 2) | 4X/2X (-2) | S+X/S-X (-2)
 ## LEVEL 3D: DRAW TWO LINES @ STARTING ANGLE + 120 (line 2) & + 0 (line 4) | 0X/-1X (-1) | S-3X/S-4X (-1)
+
+level0 <- data.frame(
+    depth = 0,
+    num_triangles = 0,
+    degrees = 0,
+    sidelength = 1,
+    side = 1,
+    point = c(1, 2),
+    x = c(0, 0 + (cos(0 * pi / 180) * 1)),
+    y = c(0, 0 + (sin(0 * pi / 180) * 1))
+)
+
+level1 <- data.frame(
+    depth = level0$depth[1] + 1,
+    num_triangles = 2 ^ level0$depth[1],
+    degrees = c(level0$degrees[1] + 60, level0$degrees[1] + 120),
+    sidelength = level0$sidelength[1] / 3,
+    side = c(1, 2),
+    point = c(1, 1, 2, 2), 
+    x = c((level0$x[2] - level0$x[1]) / 3, 2 * ((level0$x[2] - level0$x[1]) / 3), 
+          (((level0$x[2] - level0$x[1]) / 3) + 
+               cos((level0$degrees[1] + 60) * pi / 180) * 
+               level0$sidelength[1] / 3), 
+          ((2 * (level0$x[2] - level0$x[1]) / 3) + 
+               cos((level0$degrees[1] + 120) * pi / 180) * 
+               level0$sidelength[1] / 3)),
+    y = c((level0$y[2] - level0$y[1]) / 3, 2 * ((level0$y[2] - level0$y[1]) / 3), 
+          (((level0$y[2] - level0$y[1]) / 3) + 
+               sin((level0$degrees[1] + 60) * pi / 180) * 
+               level0$sidelength[1] / 3), 
+          ((2 * (level0$y[2] - level0$y[1]) / 3) + 
+               sin((level0$degrees[1] + 120) * pi / 180) * 
+               level0$sidelength[1] / 3))
+)
+
+level <- rbind(level0, level1)
+
+level2 <- data.frame(
+    depth = level1$depth[1] + 1,
+    num_triangles = 2 ^ level1$depth[1],
+    degrees = c(level1$degrees[1] + 60, level1$degrees[1] + 120,
+                180 - level1$degrees[1], 180 - (3 * level1$degrees[1])),
+    sidelength = level1$sidelength[1] / 3,
+    side = c(1, 2, 3, 4),
+    point = c(1, 1, 1, 1, 2, 2, 2, 2), 
+    #### NEED TO INSERT THE 4 NEW POINTS FOR X AND Y ###
+    ### THIS IS WHERE YOU QUIT ####
+    x = c((level1$x[2] - level1$x[1]) / 3, 2 * ((level1$x[2] - level1$x[1]) / 3), 
+          (((level1$x[2] - level1$x[1]) / 3) + 
+               cos((level1$degrees[1] + 60) * pi / 180) * 
+               level1$sidelength[1] / 3), 
+          ((2 * (level1$x[2] - level1$x[1]) / 3) + 
+               cos((level1$degrees[1] + 120) * pi / 180) * 
+               level1$sidelength[1] / 3)), 
+    #### NEED TO INSERT THE 4 NEW POINTS FOR X AND Y ###
+    y = c((level1$y[2] - level1$y[1]) / 3, 2 * ((level1$y[2] - level1$y[1]) / 3), 
+          (((level1$y[2] - level1$y[1]) / 3) + 
+               sin((level1$degrees[1] + 60) * pi / 180) * 
+               level1$sidelength[1] / 3), 
+          ((2 * (level1$y[2] - level1$y[1]) / 3) + 
+               sin((level1$degrees[1] + 120) * pi / 180) * 
+               level1$sidelength[1] / 3))
+)
+
+ggplot(level, aes(x, y)) + 
+    geom_point()
+
+###########################################
 
 library(ggplot2)
 library(dplyr)
